@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="style.css">
+
+    <title>MNTR Dashboard</title>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <aside class="sidebar">
+
+            <div class="logo">
+                <div class="logo-mark"></div>
+                <h1>MNTR</h1>
+            </div>
+
+            <p class="nav-title">Overview</p>
+
+            <nav class="nav">
+
+                <a href="#" class="nav-item active">
+                    <i data-lucide="layout-dashboard"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <i data-lucide="monitor"></i>
+                    <span>Devices</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <i data-lucide="shield"></i>
+                    <span>Security</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <i data-lucide="activity"></i>
+                    <span>Activity</span>
+                </a>
+
+                <a href="#" class="nav-item">
+                    <i data-lucide="file-text"></i>
+                    <span>Reports</span>
+                </a>
+
+            </nav>
+
+            <p class="nav-title system-title">System</p>
+
+            <nav class="nav">
+
+                <a href="#" class="nav-item">
+                    <i data-lucide="settings"></i>
+                    <span>Settings</span>
+                </a>
+
+            </nav>
+
+            <div class="sidebar-bottom">
+                <div class="system-status">
+                    <div class="status-dot"></div>
+                    Monitoring active
+                </div>
+            </div>
+
+        </aside>
+
+
+        <main class="content">
+
+            <header class="topbar">
+
+                <div class="page-title">
+                    <h2>Dashboard</h2>
+                    <span>IT infrastructure overview</span>
+                </div>
+
+                <div class="search-box">
+                    <i data-lucide="search"></i>
+                    <input
+                        type="search"
+                        class="search"
+                        placeholder="Search devices..."
+                    >
+                </div>
+                <div class="connection-status">
+                    <span class="connection-dot"></span>
+                    <span id="connection-text">Connecting...</span>
+                </div>
+                <div class="topbar-icons">
+
+                    <i data-lucide="bell" class="top-icon"></i>
+
+                    <i data-lucide="help-circle" class="top-icon"></i>
+
+                    <div class="profile">
+                        <div class="avatar">B</div>
+
+                        <div class="profile-text">
+                            <strong>Admin</strong>
+                            <span>Administrator</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <div class="dashboard">
+
+                <section class="stats">
+
+                    <div class="stat-card">
+
+                        <div class="stat-top">
+                            <span class="stat-name">Total Devices</span>
+                            <i data-lucide="monitor" class="stat-icon"></i>
+                        </div>
+
+                        <div class="stat-value"  id="total-devices">24</div>
+                        <div class="stat-change">+3 this month</div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-top">
+                            <span class="stat-name">Online</span>
+                            <i data-lucide="wifi" class="stat-icon"></i>
+                        </div>
+
+                        <div class="stat-value" id="online-devices">21</div>
+                        <div class="stat-change">87.5% availability</div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-top">
+                            <span class="stat-name">Security Issues</span>
+                            <i data-lucide="shield-alert" class="stat-icon"></i>
+                        </div>
+
+                        <div class="stat-value">4</div>
+                        <div class="stat-change warning">2 need attention</div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-top">
+                            <span class="stat-name">Avg. CPU Usage</span>
+                            <i data-lucide="cpu" class="stat-icon"></i>
+                        </div>
+
+                        <div class="stat-value" id="avg-cpu-stat">36%</div>
+                        <div class="stat-change">-4.2% from yesterday</div>
+
+                    </div>
+
+                </section>
+
+
+                <section class="middle-grid">
+
+                    <div class="panel">
+
+                        <div class="panel-header">
+                            <h3>Resource Usage</h3>
+                            <span>Last 7 days</span>
+                        </div>
+
+                        <div class="chart">
+
+                            <div class="chart-grid grid-1"></div>
+                            <div class="chart-grid grid-2"></div>
+                            <div class="chart-grid grid-3"></div>
+
+                            <div class="bars">
+
+                                <div class="bar" style="height: 43%;"></div>
+                                <div class="bar" style="height: 57%;"></div>
+                                <div class="bar" style="height: 49%;"></div>
+                                <div class="bar" style="height: 70%;"></div>
+                                <div class="bar" style="height: 61%;"></div>
+                                <div class="bar" style="height: 79%;"></div>
+                                <div class="bar" style="height: 65%;"></div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="panel">
+
+                        <div class="panel-header">
+                            <h3>Security Overview</h3>
+                            <span>Recent events</span>
+                        </div>
+
+                        <div class="security-list">
+
+                            <div class="security-item">
+
+                                <div class="security-icon">
+                                    <i data-lucide="triangle-alert"></i>
+                                </div>
+
+                                <div class="security-info">
+                                    <strong>High CPU usage</strong>
+                                    <span>DESKTOP-01 · 8 min ago</span>
+                                </div>
+
+                                <div class="severity">Medium</div>
+
+                            </div>
+
+
+                            <div class="security-item">
+
+                                <div class="security-icon">
+                                    <i data-lucide="lock"></i>
+                                </div>
+
+                                <div class="security-info">
+                                    <strong>Security scan completed</strong>
+                                    <span>LAPTOP-03 · 21 min ago</span>
+                                </div>
+
+                                <div class="severity low">Low</div>
+
+                            </div>
+
+
+                            <div class="security-item">
+
+                                <div class="security-icon">
+                                    <i data-lucide="wifi-off"></i>
+                                </div>
+
+                                <div class="security-info">
+                                    <strong>Device went offline</strong>
+                                    <span>SERVER-02 · 42 min ago</span>
+                                </div>
+
+                                <div class="severity">Medium</div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <section class="devices-panel">
+
+                    <div class="panel-header">
+                        <h3>Devices</h3>
+                        <span id="registered-devices-indicator">24 registered devices</span>
+                    </div>
+
+                    <table class="device-table">
+
+                        <thead>
+
+                            <tr>
+                                <th>USERNAME</th>
+                                <th>DEVICE</th>
+                                <th>IP ADDRESS</th>
+                                <th>SYSTEM</th>
+                                <th>CPU</th>
+                                <th>RAM</th>
+                                <th>STATUS</th>
+                                <th>LAST SEEN</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="device-list">
+
+                  
+                        </tbody>
+
+                    </table>
+
+                </section>
+
+            </div>
+
+        </main>
+
+    </div>
+
+    <script src="app.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        lucide.createIcons();
+    </script>
+
+</body>
+</html>
