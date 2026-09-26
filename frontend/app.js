@@ -1,9 +1,11 @@
 document.addEventListener("DOMContentLoaded",(event)=> {
-    console.log("Dom is ready to load")
      
        
     let Devices = []
     let SearchTerm = ""
+    let ResourceRange = 7
+    let ResourceDevice = "all"
+    let ResourceHistory = []
     function RenderDevices(devices) {
 
 const DeviceList = document.querySelector("#device-list")
@@ -71,9 +73,9 @@ const DeviceList = document.querySelector("#device-list")
     .then(data => {
 
             Devices = data.devices
+            UpdateResourceDeviceSelector()
 
 
-            console.log(data.devices)
             
             const TotalDevices = document.querySelector("#total-devices")
 
@@ -154,8 +156,163 @@ const DeviceList = document.querySelector("#device-list")
         RenderDevices(FilteredDevices)
     }
 
+    function UpdateResourceChart() {
+
+        let ResourceUrl = ""
+
+        if(ResourceDevice === "all"){
+            ResourceUrl = `http://127.0.0.1:5000/api/resources?days=${ResourceRange}`
+
+        }
+        else {
+            ResourceUrl = `http://127.0.0.1:5000/api/devices/${ResourceDevice}/resources?days=${ResourceRange}`
+        }
+        fetch(ResourceUrl)
+        .then(response => response.json())
+        .then(data => {
+            ResourceHistory = data.history
+            const history = ResourceHistory
+            const chart = document.querySelector("#resource-chart-svg")
+            if (history.length === 0) {
+                chart.innerHTML = ""
+                return
+            }
+
+            const CpuPoints = history.map((item, index) => {
+                const x = history.length === 1
+                    ? 0
+                    : (index / (history.length - 1)) * 600
+            
+                const y = 200 - (item.cpu_usage / 100) * 200
+            
+                return `${x},${y}`
+            })
+            const RamPoints = history.map((item, index) => {
+                const x = history.length === 1
+                    ? 0
+                    : (index / (history.length - 1)) * 600
+            
+                const y = 200 - (item.ram_usage / 100) * 200
+            
+                return `${x},${y}`
+
+            })
+            
+
+            chart.innerHTML = `    
+            <polyline
+                points="${CpuPoints.join(" ")}"
+                fill="none"
+                stroke="#D6A84F"
+                stroke-width="2"
+            />
+
+            <polyline
+                points="${RamPoints.join(" ")}"
+                fill="none"
+                stroke="#8A8172"
+                stroke-width="2"
+            />
+        `
+
+        })
+        .catch(error => {
+            console.log("Failed to fetch resource history",error)
+        })
+    }
+    const ResourceChart = document.querySelector("#resource-chart-svg")
+
+    ResourceChart.addEventListener("mousemove", (event)=> {
+        const history = ResourceHistory
+
+        if (history.length === 0) {
+            return
+        }
+
+        const rect = ResourceChart.getBoundingClientRect()
+
+        const mouseX = event.clientX - rect.left
+        const chartWidth = rect.width
+
+        const index = Math.round(
+            (mouseX / chartWidth) * (history.length -1)
+        )
+
+        const point = history[index]
+
+        if(!point){
+            return
+        }
+
+        const Tooltip = document.querySelector("#chart-tooltip")
+
+        Tooltip.style.display = "block"
+        Tooltip.style.left =`${mouseX +10}px`
+        Tooltip.style.top = `${event.clientY - rect.top + 10}px `
+
+        const PointDate = new Date(point.recorded_at)
+
+        const Hours = String(PointDate.getHours()).padStart(2, "0")
+        const Minutes = String(PointDate.getMinutes()).padStart(2, "0")
+        
+        Tooltip.innerHTML = `
+            <div>${Hours}:${Minutes}</div>
+            <div>CPU: ${point.cpu_usage.toFixed(1)}%</div>
+            <div>RAM: ${point.ram_usage.toFixed(1)}%</div>
+        `
+    })
+
+    ResourceChart.addEventListener("mouseleave", () => {
+        const Tooltip = document.querySelector("#chart-tooltip")
+
+        Tooltip.style.display = "none"
+    })
+        const ResourceRangeSelect = document.querySelector("#resource-range")
+
+    ResourceRangeSelect.addEventListener("change",()=>{
+        ResourceRange = Number(ResourceRangeSelect.value)
+        UpdateResourceChart()
+    })
+
+    const ResourceDeviceSelect = document.querySelector("#resource-device")
+
+    ResourceDeviceSelect.addEventListener("change",()=>{
+    
+        ResourceDevice = ResourceDeviceSelect.value
+    
+    
+        UpdateResourceChart()
+    })
+    function UpdateResourceDeviceSelector(){
+        const ResourceDeviceSelect = document.querySelector("#resource-device")
+
+        const CurrentSelection = ResourceDeviceSelect.value
+
+        ResourceDeviceSelect.innerHTML = `
+            <option value="all">All Devices</option>
+        `
+
+        Devices.forEach(device =>{
+            const Option = document.createElement("option")
+
+            Option.value = device.device_id
+            Option.textContent = `${device.hostname} (${device.username})`
+
+            ResourceDeviceSelect.appendChild(Option)
+        })
+
+        if (
+            CurrentSelection === "all" || 
+            Devices.some(device => device.device_id === CurrentSelection)
+        ){
+            ResourceDeviceSelect.value = CurrentSelection
+        }
+
+    }
 
     UpdateDashboard()
+    UpdateResourceChart()
     setInterval(UpdateDashboard, 5000)
+    setInterval(UpdateResourceChart, 5000)
 
 })

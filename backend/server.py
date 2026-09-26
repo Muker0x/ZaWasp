@@ -101,7 +101,8 @@ def get_all_resource_history():
 
 @app.route("/api/devices/<device_id>/resources",methods=["GET"])
 def get_device_resource_history(device_id):
-    history = get_resource_history(device_id)
+    days = request.args.get("days",type=int)
+    history = get_resource_history(device_id,days)
 
     if history is None:
         return jsonify({

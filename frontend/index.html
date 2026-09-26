@@ -176,28 +176,52 @@
                     <div class="panel">
 
                         <div class="panel-header">
-                            <h3>Resource Usage</h3>
-                            <span>Last 7 days</span>
-                        </div>
+                <h3>Resource Usage</h3>
 
+                <div class="resource-controls">
+
+                    <select id="resource-device">
+                        <option value="all">All Devices</option>
+                    </select>
+
+                    <select id="resource-range">
+                        <option value="1">Last 24 hours</option>
+                        <option value="2">Last 2 days</option>
+                        <option value="3">Last 3 days</option>
+                        <option value="4">Last 4 days</option>
+                        <option value="5">Last 5 days</option>
+                        <option value="6">Last 6 days</option>
+                        <option value="7" selected>Last 7 days</option>
+                    </select>
+
+                </div>
+            </div>
+                    <div class="chart-legend">
+                        <span>
+                            <span class="legend-line cpu"></span>
+                            CPU
+                        </span>
+                    
+                        <span>
+                            <span class="legend-line ram"></span>
+                            RAM
+                        </span>
+                    </div>
                         <div class="chart">
 
                             <div class="chart-grid grid-1"></div>
                             <div class="chart-grid grid-2"></div>
                             <div class="chart-grid grid-3"></div>
 
-                            <div class="bars">
+                            <div class="line-chart" id="resource-chart">
 
-                                <div class="bar" style="height: 43%;"></div>
-                                <div class="bar" style="height: 57%;"></div>
-                                <div class="bar" style="height: 49%;"></div>
-                                <div class="bar" style="height: 70%;"></div>
-                                <div class="bar" style="height: 61%;"></div>
-                                <div class="bar" style="height: 79%;"></div>
-                                <div class="bar" style="height: 65%;"></div>
-
+                                <svg id="resource-chart-svg" viewBox="0 0 600 200" preserveAspectRatio="none">
+                                    
+                                </svg>
+                                
+                            
                             </div>
-
+                            <div id="chart-tooltip"></div>
                         </div>
 
                     </div>

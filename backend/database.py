@@ -142,19 +142,28 @@ def get_resource_history(device_id=None,days=None):
     try:
         connection = get_connection()
         if device_id:
-            query = """ 
-            SELECT 
+            query = """
+            SELECT
                 device_id,
-                cpu_usage,
-                ram_usage,
-                recorded_at
+                AVG(cpu_usage),
+                AVG(ram_usage),
+                date_trunc('hour', recorded_at)
+                    + INTERVAL '10 minutes'
+                    * FLOOR(EXTRACT(MINUTE FROM recorded_at) / 10)
             FROM resource_history
             WHERE device_id = %s
             AND recorded_at >= CURRENT_TIMESTAMP - (%s * INTERVAL '1 day')
-            ORDER BY recorded_at ASC
+            GROUP BY
+                device_id,
+                date_trunc('hour', recorded_at)
+                    + INTERVAL '10 minutes'
+                    * FLOOR(EXTRACT(MINUTE FROM recorded_at) / 10)
+            ORDER BY
+                date_trunc('hour', recorded_at)
+                    + INTERVAL '10 minutes'
+                    * FLOOR(EXTRACT(MINUTE FROM recorded_at) / 10)
             """
-            params = (device_id,days)
-            
+            params = (device_id, days)
         else:
             query = """
             SELECT
