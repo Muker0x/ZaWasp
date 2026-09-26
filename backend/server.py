@@ -75,7 +75,8 @@ def get_all_devices():
     }),200
 @app.route("/api/resources",methods=["GET"])
 def get_all_resource_history():
-    history = get_resource_history()
+    days = request.args.get("days",type=int)
+    history = get_resource_history(days=days)
 
     if history is None:
         return jsonify({
@@ -88,10 +89,9 @@ def get_all_resource_history():
     
     for row in history:
         history_data.append({
-            "device_id": row[0],
-            "cpu_usage": row[1],
-            "ram_usage": row[2],
-            "recorded_at": row[3]
+            "cpu_usage": row[0],
+            "ram_usage": row[1],
+            "recorded_at": row[2]
 
         })
     return jsonify({
