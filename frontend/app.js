@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded",(event)=> {
        
     let Devices = []
     let SearchTerm = ""
-    let ResourceRange = 7
+    let ResourceRange = Number(document.querySelector("#resource-range").value)
     let ResourceDevice = "all"
     let ResourceHistory = []
     function RenderDevices(devices) {
