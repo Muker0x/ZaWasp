@@ -9,8 +9,11 @@ document.addEventListener("DOMContentLoaded",(event)=> {
     function RenderDevices(devices) {
 
 const DeviceList = document.querySelector("#device-list")
-    
-        DeviceList.innerHTML = ""
+const ModalDeviceList = document.querySelector("#modal-device-list")   
+
+       DeviceList.innerHTML = ""
+       ModalDeviceList.innerHTML = ""
+       
         const Months = [
             "Jan", "Feb", "Mar",
             "Apr", "May", "Jun",
@@ -48,7 +51,8 @@ const DeviceList = document.querySelector("#device-list")
                 <td>${LastSeenDate} ${LastSeenMonth}, ${LastSeenHours}:${LastSeenMinutes}</td>
             `
     
-            DeviceList.appendChild(row)
+            DeviceList.appendChild(row.cloneNode(true))
+            ModalDeviceList.appendChild(row)
         })
     }
     function UpdateDashboard(){
@@ -310,6 +314,34 @@ const DeviceList = document.querySelector("#device-list")
 
     }
 
+    const DevicesLink = [...document.querySelectorAll(".nav-item")]
+    .find(link => link.textContent.trim() === "Devices");
+
+const DevicesModal = document.querySelector("#devices-modal");
+const CloseDevicesModal = document.querySelector("#close-devices-modal");
+
+if (DevicesLink && DevicesModal && CloseDevicesModal) {
+    DevicesLink.addEventListener("click", event => {
+        event.preventDefault();
+        DevicesModal.hidden = false;
+    });
+
+    CloseDevicesModal.addEventListener("click", () => {
+        DevicesModal.hidden = true;
+    });
+
+    DevicesModal.addEventListener("click", event => {
+        if (event.target === DevicesModal) {
+            DevicesModal.hidden = true;
+        }
+    });
+
+    document.addEventListener("keydown", event => {
+        if (event.key === "Escape") {
+            DevicesModal.hidden = true;
+        }
+    });
+}
     UpdateDashboard()
     UpdateResourceChart()
     setInterval(UpdateDashboard, 5000)
